@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
  */
 function UserDetail() {
   const { userId } = useParams();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
   useEffect(() => {
     fetchModel(`/user/${userId}`).then((data) => setUser(data));
   }, [userId]);
@@ -20,12 +20,7 @@ function UserDetail() {
   }
   return (
     <>
-      <Typography variant="body1">
-        This should be the UserDetail view of the PhotoShare app. Since it is
-        invoked from React Router the params from the route will be in property
-        match. So this should show details of user: {user.userId}. You can fetch
-        the model for the user from models.userModel.
-      </Typography>
+      <Typography variant="body1"></Typography>
       <Typography variant="body1">
         <p>
           {" "}
