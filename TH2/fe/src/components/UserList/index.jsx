@@ -18,7 +18,7 @@ import fetchModel from "../../lib/fetchModelData";
 function UserList() {
   const [users, setUsers] = useState([]);
   useEffect(() => {
-    fetchModel("/users/list").then((data) => setUsers(data));
+    fetchModel("/user/list").then((data) => setUsers(data));
   }, []);
   return (
     <div>
@@ -31,7 +31,7 @@ function UserList() {
       <List component="nav">
         {users.map((item) => (
           <>
-            <ListItem component={Link} to={`users/${item._id}`}>
+            <ListItem component={Link} to={`/user/${item._id}`}>
               <ListItemText primary={item.first_name} />
             </ListItem>
             <Divider />

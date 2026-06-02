@@ -11,9 +11,9 @@ import { useState, useEffect } from "react";
  */
 function UserDetail() {
   const { userId } = useParams();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   useEffect(() => {
-    fetchModel(`/users/${userId}`).then((data) => setUser(data));
+    fetchModel(`/user/${userId}`).then((data) => setUser(data));
   }, [userId]);
   if (!user) {
     return <Typography>Loading...</Typography>;
@@ -34,7 +34,7 @@ function UserDetail() {
         <p> Location : {user.location}</p>
         <p> Description : {user.description}</p>
         <p> Occupation : {user.occupation}</p>
-        <Link to={`/photos/${user._id}`}>
+        <Link to={`/photosOfUser/${user._id}`}>
           <p>View photos</p>
         </Link>
       </Typography>

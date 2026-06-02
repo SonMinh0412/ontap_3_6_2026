@@ -5,7 +5,7 @@
  *
  */
 function fetchModel(url) {
-  return fetch(`http://localhost:8080${url}`).then((res) => {
+  return fetch(`https://rnwtly-8081.csb.app${url}`).then((res) => {
     if (!res.ok) {
       throw new Error(`Fetch failed: ${res.status}`);
     }
