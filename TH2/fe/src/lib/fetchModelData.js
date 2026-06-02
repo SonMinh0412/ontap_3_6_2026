@@ -5,8 +5,12 @@
  *
  */
 function fetchModel(url) {
-  const models = null;
-  return models;
+  return fetch(`http://localhost:8080${url}`).then((res) => {
+    if (!res.ok) {
+      throw new Error(`Fetch failed: ${res.status}`);
+    }
+    return res.json();
+  });
 }
 
 export default fetchModel;
