@@ -1,11 +1,12 @@
 const express = require("express");
 const User = require("../db/userModel");
 const router = express.Router();
+const requireAuth = require("../middleware/requireAuth")
 
 router.post("/", async (request, response) => {});
 
 //GET userList
-router.get("/list", async (req, res) => {
+router.get("/list",requireAuth, async (req, res) => {
   try {
     const users = await User.find({}, "_id first_name last_name");
     if (!users) {
@@ -18,7 +19,7 @@ router.get("/list", async (req, res) => {
 });
 
 //GET user by ID
-router.get("/:id", async (req, res) => {
+router.get("/:id",requireAuth, async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findById(

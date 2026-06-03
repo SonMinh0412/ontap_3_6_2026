@@ -2,10 +2,11 @@ const express = require("express");
 const Photo = require("../db/photoModel");
 const router = express.Router();
 const User = require("../db/userModel");
+const requireAuth = require("../middleware/requireAuth")
 
 router.post("/", async (request, response) => {});
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", requireAuth, async (req, res) => {
   try {
     const userId = req.params.id;
     const checkId = await User.findById(userId);

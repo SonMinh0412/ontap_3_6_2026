@@ -9,7 +9,7 @@ import fetchModel from "../../lib/fetchModelData";
  * Define TopBar, a React component of Project 4.
  */
 
-function TopBar() {
+function TopBar({loggedInUser, onLogout}) {
   const path = useLocation().pathname;
   const [contentText, setContentText] = useState("");
   useEffect(() => {
@@ -34,6 +34,11 @@ function TopBar() {
         <Typography variant="h5" color="inherit">
           {contentText}
         </Typography>
+        {loggedInUser ? (
+          <Typography>Hi , {loggedInUser.first_name}</Typography>
+        ) : (
+          <Typography>Please Login</Typography>
+        )}
       </Toolbar>
     </AppBar>
   );

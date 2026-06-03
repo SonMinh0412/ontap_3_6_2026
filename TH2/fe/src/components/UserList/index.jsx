@@ -15,19 +15,14 @@ import fetchModel from "../../lib/fetchModelData";
 /**
  * Define UserList, a React component of Project 4.
  */
-function UserList() {
+function UserList({loggedInUser}) {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     fetchModel("/user/list").then((data) => setUsers(data));
   }, []);
   return (
     <div>
-      <Typography variant="body1">
-        This is the user list, which takes up 3/12 of the window. You might
-        choose to use <a href="https://mui.com/components/lists/">Lists</a> and{" "}
-        <a href="https://mui.com/components/dividers/">Dividers</a> to display
-        your users like so:
-      </Typography>
+      {loggedInUser &&(
       <List component="nav">
         {users.map((item) => (
           <>
@@ -38,9 +33,7 @@ function UserList() {
           </>
         ))}
       </List>
-      <Typography variant="body1">
-        The model comes in from models.userListModel()
-      </Typography>
+      )}
     </div>
   );
 }

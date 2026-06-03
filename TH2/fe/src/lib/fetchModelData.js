@@ -4,12 +4,21 @@
  * @param {string} url      The URL to issue the GET request.
  *
  */
-function fetchModel(url) {
-  return fetch(`https://rnwtly-8081.csb.app${url}`).then((res) => {
+function fetchModel(url, options = {}) {
+  const token = localStorage.getItem("token");
+  return fetch(`https://8f7h4w-8081.csb.app${url}`, {
+    ...options,
+    headers : {
+      "Content-Type" : "application/json",
+      ...(token ? {Authorization : `Bearer ${token}`} : {}),
+      ...options.headers,
+    }
+  }).then(async (res) => {
+    const data = await res.json();
     if (!res.ok) {
       throw new Error(`Fetch failed: ${res.status}`);
     }
-    return res.json();
+    return data;
   });
 }
 
