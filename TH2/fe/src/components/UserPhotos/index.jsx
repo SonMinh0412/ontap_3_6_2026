@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Typography, TextField, Button } from "@mui/material";
 
 import "./styles.css";
 import { useParams, Link } from "react-router-dom";
@@ -8,12 +8,44 @@ import fetchModel from "../../lib/fetchModelData";
 /**
  * Define UserPhotos, a React component of Project 4.
  */
-function UserPhotos() {
+function UserPhotos({ loggedInUser }) {
   const { userId } = useParams();
   const [photos, setPhotos] = useState([]);
+  const [newComments, setNewComments] = useState({});
+  const [errorMessage, setErrorMessage] = useState({});
   useEffect(() => {
     fetchModel(`/photosOfUser/${userId}`).then((data) => setPhotos(data));
-  });
+  }, [userId]);
+  const handleAddComment = async (photoId) => {
+    const comment = newComments[photoId];
+    try {
+      const data = await fetchModel(`/commentsOfPhoto/${photoId}`, {
+        method: "POST",
+        body: JSON.stringify({ comment }),
+      });
+      setPhotos((prevPhotos) =>
+        prevPhotos.map((photo) =>
+          photo._id === photoId
+            ? {
+                ...photo,
+                comments: [...(photo.comments || []), data],
+              }
+            : photo
+        )
+      );
+      setNewComments((prev) => ({
+        ...prev,
+        [photoId]: "",
+      }));
+      setErrorMessage((prev) => ({
+        ...prev,
+        [photoId]: "",
+      }));
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
+  };
+
   return (
     <Typography variant="body1">
       {photos.map((photo) => (
@@ -21,6 +53,22 @@ function UserPhotos() {
           <img src={require(`/src/images/${photo.file_name}`)} />
           <p>Create at: {photo.date_time}</p>
           <h2>Comments :</h2>
+          <TextField
+            label="Add comment"
+            multiline
+            fullWidth
+            minRows={2}
+            value={newComments[photo._id]}
+            onChange={(e) =>
+              setNewComments((prev) => ({
+                ...prev,
+                [photo._id]: e.target.value,
+              }))
+            }
+          />
+          <Button onClick={() => handleAddComment(photo._id)}>
+            Add Comment
+          </Button>
           {(photo.comments || []).map((comment) => (
             <div key={comment._id}>
               <Link to={`/user/${comment.user._id}`}>

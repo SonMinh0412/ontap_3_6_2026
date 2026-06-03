@@ -64,7 +64,7 @@ const App = (props) => {
                   path="/photosOfUser/:userId"
                   element={
                     isAuthenticated ? (
-                      <UserPhotos />
+                      <UserPhotos loggedInUser={loggedInUser} />
                     ) : (
                       <Navigate to="/login" replace />
                     )
