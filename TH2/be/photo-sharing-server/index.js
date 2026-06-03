@@ -6,13 +6,17 @@ const UserRouter = require("./routes/UserRouter");
 const PhotoRouter = require("./routes/PhotoRouter");
 const AdminRouter = require("./routes/AdminRouter");
 const CommentRouter = require("./routes/CommentRouter");
+const path = require("path");
+const multer = require("multer");
 
 dbConnect();
 
 app.use(cors());
 app.use(express.json());
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/user", UserRouter);
 app.use("/photosOfUser", PhotoRouter);
+app.use("/photos", PhotoRouter);
 app.use("/admin", AdminRouter);
 app.use("/commentsOfPhoto", CommentRouter);
 

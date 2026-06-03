@@ -2,9 +2,10 @@ import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 
 import "./styles.css";
-import { useLocation, matchPath, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useLocation, matchPath, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import fetchModel from "../../lib/fetchModelData";
+
 /**
  * Define TopBar, a React component of Project 4.
  */
@@ -12,6 +13,28 @@ import fetchModel from "../../lib/fetchModelData";
 function TopBar({ loggedInUser, onLogout }) {
   const path = useLocation().pathname;
   const [contentText, setContentText] = useState("");
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+  const [uploadMessage, setUploadMessage] = useState("");
+  const handleAddPhoto = () => {
+    fileInputRef.current.click();
+  };
+  const handlePhotoSelected = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("photo", file);
+    try {
+      await fetchModel("/photos/new", {
+        method: "POST",
+        body: formData,
+      });
+      setUploadMessage("upload thanh cong");
+      navigate(`/photosOfUser/${loggedInUser._id}`);
+    } catch (error) {
+      setUploadMessage(error.message);
+    }
+    e.target.value = "";
+  };
   useEffect(() => {
     const userDetailMatch = matchPath("/user/:userId", path);
     const photosDetailMatch = matchPath("/photosOfUser/:userId", path);
@@ -40,6 +63,17 @@ function TopBar({ loggedInUser, onLogout }) {
             <Button onClick={onLogout} color="inherit">
               Logout
             </Button>
+            <Button onClick={handleAddPhoto} color="inherit">
+              Add photo
+            </Button>
+            <input
+              type="file"
+              accept="images/*"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handlePhotoSelected}
+            ></input>
+            {uploadMessage && <Typography>{uploadMessage}</Typography>}
           </>
         ) : (
           <Typography>Please Login</Typography>

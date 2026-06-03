@@ -50,7 +50,7 @@ function UserPhotos({ loggedInUser }) {
     <Typography variant="body1">
       {photos.map((photo) => (
         <div key={photo._id}>
-          <img src={require(`/src/images/${photo.file_name}`)} />
+          <img src={`https://8f7h4w-8081.csb.app/images/${photo.file_name}`} />
           <p>Create at: {photo.date_time}</p>
           <h2>Comments :</h2>
           <TextField

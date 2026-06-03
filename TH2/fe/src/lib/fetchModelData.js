@@ -6,13 +6,14 @@
  */
 function fetchModel(url, options = {}) {
   const token = localStorage.getItem("token");
+  const isFormData = options.body instanceof FormData;
   return fetch(`https://8f7h4w-8081.csb.app${url}`, {
     ...options,
-    headers : {
-      "Content-Type" : "application/json",
-      ...(token ? {Authorization : `Bearer ${token}`} : {}),
+    headers: {
+      ...(isFormData ? {} : { "Content-type": "application/json" }),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
-    }
+    },
   }).then(async (res) => {
     const data = await res.json();
     if (!res.ok) {

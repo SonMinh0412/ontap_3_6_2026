@@ -2,9 +2,32 @@ const express = require("express");
 const Photo = require("../db/photoModel");
 const router = express.Router();
 const User = require("../db/userModel");
-const requireAuth = require("../middleware/requireAuth")
+const requireAuth = require("../middleware/requireAuth");
+const multer = require("multer");
+const path = require("path");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../images"));
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + path.extname(file.originalname);
+  },
+});
+const upload = multer({ storage });
 
-router.post("/", async (request, response) => {});
+router.post("/new", requireAuth, upload.single("photo"), async (req, res) => {
+  try {
+    const newPhoto = await Photo.create({
+      file_name: req.file.filename,
+      date_time: new Date(),
+      user_id: req.user.id,
+      comments: [],
+    });
+    res.status(200).json({ message: "Upload ảnh thành công" });
+  } catch (error) {
+    res.status(500).json({ message: "Loi server" });
+  }
+});
 
 router.get("/:id", requireAuth, async (req, res) => {
   try {

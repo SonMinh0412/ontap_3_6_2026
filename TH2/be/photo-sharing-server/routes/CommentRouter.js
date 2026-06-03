@@ -3,8 +3,9 @@ const router = express.Router();
 const User = require("../db/userModel");
 const jwt = require("jsonwebtoken");
 const Photo = require("../db/photoModel");
+const requireAuth = require("../middleware/requireAuth");
 
-router.post("/:photo_id", async (req, res) => {
+router.post("/:photo_id", requireAuth, async (req, res) => {
   try {
     const photoId = req.params.photo_id;
     const photo = await Photo.findById(photoId);
@@ -26,7 +27,7 @@ router.post("/:photo_id", async (req, res) => {
     return res.status(200).json({
       message: "Them comment thanh cong !",
       _id: newComment._id,
-      date_tine: newComment.date_time,
+      date_time: newComment.date_time,
       comment: newComment.comment,
       user: {
         _id: currentUser._id,
