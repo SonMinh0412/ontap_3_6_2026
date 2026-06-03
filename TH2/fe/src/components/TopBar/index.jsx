@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 
 import "./styles.css";
 import { useLocation, matchPath, useParams } from "react-router-dom";
@@ -9,7 +9,7 @@ import fetchModel from "../../lib/fetchModelData";
  * Define TopBar, a React component of Project 4.
  */
 
-function TopBar({loggedInUser, onLogout}) {
+function TopBar({ loggedInUser, onLogout }) {
   const path = useLocation().pathname;
   const [contentText, setContentText] = useState("");
   useEffect(() => {
@@ -35,7 +35,12 @@ function TopBar({loggedInUser, onLogout}) {
           {contentText}
         </Typography>
         {loggedInUser ? (
-          <Typography>Hi , {loggedInUser.first_name}</Typography>
+          <>
+            <Typography>Hi, {loggedInUser.first_name}</Typography>
+            <Button onClick={onLogout} color="inherit">
+              Logout
+            </Button>
+          </>
         ) : (
           <Typography>Please Login</Typography>
         )}

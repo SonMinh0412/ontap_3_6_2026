@@ -15,24 +15,25 @@ import fetchModel from "../../lib/fetchModelData";
 /**
  * Define UserList, a React component of Project 4.
  */
-function UserList({loggedInUser}) {
+function UserList({ loggedInUser }) {
   const [users, setUsers] = useState([]);
   useEffect(() => {
+    if (!loggedInUser) return;
     fetchModel("/user/list").then((data) => setUsers(data));
-  }, []);
+  }, [loggedInUser]);
   return (
     <div>
-      {loggedInUser &&(
-      <List component="nav">
-        {users.map((item) => (
-          <>
-            <ListItem component={Link} to={`/user/${item._id}`}>
-              <ListItemText primary={item.first_name} />
-            </ListItem>
-            <Divider />
-          </>
-        ))}
-      </List>
+      {loggedInUser && (
+        <List component="nav">
+          {users.map((item) => (
+            <>
+              <ListItem component={Link} to={`/user/${item._id}`}>
+                <ListItemText primary={item.first_name} />
+              </ListItem>
+              <Divider />
+            </>
+          ))}
+        </List>
       )}
     </div>
   );
