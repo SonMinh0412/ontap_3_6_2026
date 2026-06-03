@@ -1,35 +1,45 @@
 const express = require("express");
 const User = require("../db/userModel");
 const router = express.Router();
-const requireAuth = require("../middleware/requireAuth")
+const requireAuth = require("../middleware/requireAuth");
 
 router.post("/", async (req, res) => {
   try {
-    const {loginname, password, first_name, last_name, location, description, occupation} = req.body;
-    if(!first_name || !last_name || !password || !loginname){
-      return res.status(400).json({message : "Login_name Password First_name Last_name khong duoc de trong"});
-    }
-    const existUser = User.findOne(login_name);
-    if(existUser){
-      return res.status(400).json({message : "Login_name da ton tai"});
-    }
-    const newUser = await User.create({
-      loginname,
+    const {
+      login_name,
       password,
       first_name,
       last_name,
       location,
       description,
-      occupation
-    })
-    res.status(200).json({message : "Tao user thanh cong"})
-  } catch(error){
-    res.status(500).json({message : "Loi Server"});
+      occupation,
+    } = req.body;
+    if (!first_name || !last_name || !password || !login_name) {
+      return res.status(400).json({
+        message: "Login_name Password First_name Last_name khong duoc de trong",
+      });
+    }
+    const existUser = await User.findOne({ login_name });
+    if (existUser) {
+      return res.status(400).json({ message: "Login_name da ton tai" });
+    }
+    const newUser = await User.create({
+      login_name,
+      password,
+      first_name,
+      last_name,
+      location,
+      description,
+      occupation,
+    });
+    res.status(200).json({ message: "Tao user thanh cong" });
+  } catch (error) {
+    res.status(500).json({ message: "Loi Server" });
   }
 });
 
 //GET userList
-router.get("/list",requireAuth, async (req, res) => {
+router.get("/list", requireAuth, async (req, res) => {
   try {
     const users = await User.find({}, "_id first_name last_name");
     if (!users) {
@@ -42,7 +52,7 @@ router.get("/list",requireAuth, async (req, res) => {
 });
 
 //GET user by ID
-router.get("/:id",requireAuth, async (req, res) => {
+router.get("/:id", requireAuth, async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findById(

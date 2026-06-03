@@ -29,7 +29,7 @@ function TopBar({ loggedInUser, onLogout }) {
         body: formData,
       });
       setUploadMessage("upload thanh cong");
-      navigate(`/photosOfUser/${loggedInUser._id}`);
+      navigate(`/photosOfUser/${loggedInUser._id}?refresh=${Date.now()}`);
     } catch (error) {
       setUploadMessage(error.message);
     }

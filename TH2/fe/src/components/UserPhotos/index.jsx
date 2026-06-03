@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, TextField, Button } from "@mui/material";
 
 import "./styles.css";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import fetchModel from "../../lib/fetchModelData";
 /**
@@ -13,9 +13,10 @@ function UserPhotos({ loggedInUser }) {
   const [photos, setPhotos] = useState([]);
   const [newComments, setNewComments] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
+  const location = useLocation();
   useEffect(() => {
     fetchModel(`/photosOfUser/${userId}`).then((data) => setPhotos(data));
-  }, [userId]);
+  }, [userId, location.search]);
   const handleAddComment = async (photoId) => {
     const comment = newComments[photoId];
     try {
