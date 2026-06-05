@@ -59,12 +59,14 @@ function TopBar({ loggedInUser, onLogout }) {
         </Typography>
         {loggedInUser ? (
           <>
-            <Typography>Hi, {loggedInUser.first_name}</Typography>
-            <Button onClick={onLogout} color="inherit">
-              Logout
-            </Button>
+            <Typography variant="h5" color="inherit">
+              Hi, {loggedInUser.first_name}
+            </Typography>
             <Button onClick={handleAddPhoto} color="inherit">
               Add photo
+            </Button>
+            <Button onClick={onLogout} color="inherit">
+              Logout
             </Button>
             <input
               type="file"
