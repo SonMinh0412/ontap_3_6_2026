@@ -52,7 +52,7 @@ function UserPhotos({ loggedInUser }) {
       {photos.map((photo) => (
         <div key={photo._id}>
           <img src={`https://8f7h4w-8081.csb.app/images/${photo.file_name}`} />
-          <p>Create at: {photo.date_time}</p>
+          <p>Create at: {new Date(photo.date_time).toLocaleString()}</p>
           <h2>Comments :</h2>
           <TextField
             label="Add comment"
@@ -78,7 +78,7 @@ function UserPhotos({ loggedInUser }) {
                   {comment.user.first_name} {comment.user.last_name}
                 </p>{" "}
               </Link>
-              <p>Comment at : {comment.date_time}</p>
+              <p>Comment at : {new Date(comment.date_time).toLocaleString()}</p>
               <p>{comment.comment}</p>
             </div>
           ))}
